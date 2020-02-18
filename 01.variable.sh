@@ -1,11 +1,9 @@
 #!/bin/bash
 
-varOne="apple"
-varTwo="juice"
+mysql_id='user'
+mysql_directory='/etc/mysql'
 
-echo $varOne
-echo ${varTwo}
+echo $mysql_id
+echo $mysql_directory
 
-echo $varOne", "$varTwo
-echo ${varOne}", "$varTwo
 
