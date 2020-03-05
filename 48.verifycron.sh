@@ -11,10 +11,13 @@ validNum(){
 	# 인자1: 값 // 인자2:최댓값
 	num=$1	max=$2
 
+	#값이 * 일 경우
 	if [ "$num" = "X" ] ; then
 		return 0
+	#숫자 이외의 문자를 포함하고 있을 경우
 	elif [ ! -z $(echo $num | sed 's/[[:digit:]]//g') ] ; then
 		return 1
+	#숫자가 최대값보다 클 경우
 	elif [ $num -gt $max ] ; then
 		return 1
 	else
@@ -67,7 +70,7 @@ do
 	lines="$(( $lines + 1 ))"
 	errors=0
 
-	if [ -z "$min" -o "${min%${min#?}}" = "#" ] ; then
+	if [ -z "$min" -o "${min:0:1}}" = "#" ] ; then
 		#빈 줄이거나 줄의 첫 글자가 #이면 건너뛴다.
 		continue
 	fi
@@ -103,5 +106,29 @@ do
 		fi
 	done
 
-	#월 확인
+	#월 확인(이름or숫자)
 	for monslice in $(echo "$mon" | sed 's/[,-]/ /g') ; do
+		if ! validNum $monslice 12 ; then
+			if ! validMon "$monslice" ; then
+				echo "Line ${lines}: Invalid month value \"$monslice\""
+				errors=1
+			fi
+		fi
+	done
+
+	#요일 확인(이름or숫자)
+	for dowslice in $(echo "$dow" | sed 's/[,-]/ /g') ; do
+		if ! validNum $dowslice 7 ; then
+			if ! validDay $dowslice ; then
+				echo "Line ${lines}: Invalid day of week value \"$dowslice\""
+				errors=1
+			fi
+		fi
+	done
+
+	if [ $errors -gt 0 ] ; then
+		echo ">>>> ${lines}: $sourceline"
+		echo ""
+		totalerrors="$(( $totalerrors + 1 ))"
+	fi
+done < $1

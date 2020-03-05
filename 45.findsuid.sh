@@ -8,7 +8,6 @@ verbose=0
 
 #-v 옵션 작성 시 출력 
 if [ "$1" = "-v" ] ; then
-if [ "$1" = "-v" ] ; then
 	vervose=1
 fi
 
