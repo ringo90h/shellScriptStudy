@@ -6,7 +6,7 @@ mtime="7"
 #출력모드 
 verbose=0
 
-#-v 옵션 작성 시 출력 
+#-v 옵션 작성 시 출력 모드 변경
 if [ "$1" = "-v" ] ; then
 	vervose=1
 fi
